@@ -37,3 +37,7 @@ module:
   imports:
     - path: "github.com/google/docsy"
     - path: "github.com/google/docsy/dependencies"
+    - path: "github.com/secure-cloud-stack/docs"
+      mounts:
+        - source: user
+          target: content/docs/user
