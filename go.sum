@@ -2,6 +2,6 @@ github.com/FortAwesome/Font-Awesome v0.0.0-20220831210243-d3a7818c253f/go.mod h1
 github.com/google/docsy v0.6.0 h1:43bVF18t2JihAamelQjjGzx1vO2ljCilVrBgetCA8oI=
 github.com/google/docsy v0.6.0/go.mod h1:VKKLqD8PQ7AglJc98yBorATfW7GrNVsn0kGXVYF6G+M=
 github.com/google/docsy/dependencies v0.6.0/go.mod h1:EDGc2znMbGUw0RW5kWwy2oGgLt0iVXBmoq4UOqstuNE=
-github.com/secure-cloud-stack/docs v0.0.0-20230302105449-7aa7f3adb312 h1:hGyDReGy5Xc9YqvBlmdGvreBIJUzb25KHnXGUEd1le8=
-github.com/secure-cloud-stack/docs v0.0.0-20230302105449-7aa7f3adb312/go.mod h1:HH3/Q2ZpKMyr+aFDIW5ieZHwuQboEq6LfvQYH2iaA5o=
+github.com/secure-cloud-stack/docs v0.0.0-20230302133107-96d9932d2e2b h1:A4jA0iQ9ej3N/ReASzxmxW8UzcpcasQkItrXi47KjKQ=
+github.com/secure-cloud-stack/docs v0.0.0-20230302133107-96d9932d2e2b/go.mod h1:HH3/Q2ZpKMyr+aFDIW5ieZHwuQboEq6LfvQYH2iaA5o=
 github.com/twbs/bootstrap v4.6.2+incompatible/go.mod h1:fZTSrkpSf0/HkL0IIJzvVspTt1r9zuf7XlZau8kpcY0=

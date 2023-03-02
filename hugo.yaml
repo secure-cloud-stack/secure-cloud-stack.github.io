@@ -2,6 +2,8 @@ baseURL: "/"
 params:
   copyright: "Netic A/S"
   privacy_policy: "https://www.netic.dk/privatlivspolitik/"
+  ui:
+    sidebar_menu_compact: true
 title: "Secure Cloud Stack"
 
 # Language settings
@@ -41,3 +43,5 @@ module:
       mounts:
         - source: user
           target: content/docs/user
+        - source: tutorials
+          target: content/docs/tutorials
