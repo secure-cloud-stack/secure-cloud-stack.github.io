@@ -1,0 +1,39 @@
+baseURL: "/"
+params:
+  copyright: "Netic A/S"
+  privacy_policy: "https://www.netic.dk/privatlivspolitik/"
+title: "Secure Cloud Stack"
+
+# Language settings
+contentDir: "content/en"
+defaultContentLanguage: "en"
+defaultContentLanguageInSubdir: false
+# Useful when translating.
+enableMissingTranslationPlaceholders: true
+
+enableRobotsTXT: true
+
+# Will give values to .Lastmod etc.
+enableGitInfo: true
+
+imaging:
+  resampleFilter: "CatmullRom"
+  quality: 75
+  anchor: "smart"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    style: "tango"
+
+outputs:
+  section: ["HTML", "print", "RSS"]
+
+module:
+  hugoVersion:
+    extended: true
+  imports:
+    - path: "github.com/google/docsy"
+    - path: "github.com/google/docsy/dependencies"
