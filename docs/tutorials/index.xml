@@ -1,0 +1,154 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Secure Cloud Stack – Tutorials</title><link>/docs/tutorials/</link><description>Recent content in Tutorials on Secure Cloud Stack</description><generator>Hugo -- gohugo.io</generator><atom:link href="/docs/tutorials/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Application Operations</title><link>/docs/tutorials/application-operation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/docs/tutorials/application-operation/</guid><description>
+&lt;p>Netic will do operations and management of Kubernetes as well as cluster wide components referred to
+as technical operations and management. However, monitoring and reacting to events from the deployed
+applications are not covered by this - this is referred to as application operations.&lt;/p>
+&lt;h2 id="getting-started">Getting Started&lt;/h2>
+&lt;p>Application operations is basically setup following the below steps:&lt;/p>
+&lt;ol>
+&lt;li>Define incident scenarios which requires human interaction and write the standard operating procedures to be followed&lt;/li>
+&lt;li>Identify and ensure metrics are available to detect the incident scenarios&lt;/li>
+&lt;li>Develop alerting rules based on the metrics&lt;/li>
+&lt;li>Handover alerting rules and standard operating procedures to Netic for verification and activation&lt;/li>
+&lt;/ol>
+&lt;p>Often new scenarios are discovered along the way extending the set of alerting rules over time.&lt;/p>
+&lt;h2 id="incident-scenarios">Incident Scenarios&lt;/h2>
+&lt;p>The failure scenarios may vary a lot from application to application. Strart out by trying to identify the most critical
+points in the application and how to detect failure in these. It is important to write a standard operating procedure
+to go together with every failure scenario describing the steps to be taken - even if this is to wake up the developer
+on duty.&lt;/p>
+&lt;h2 id="metrics">Metrics&lt;/h2>
+&lt;p>Metrics can be either specific application metrics such as rate of caught exceptions, http response error rates or other
+similar but metrics can also be core Kubernetes metrics such as memory or cpu consumption. The monitoring must be
+based on metrics rather than log patterns since metrics is much more robust to change. If the application provides
+application specific metrics the application must expose these see &lt;a href="../observability/">Observability&lt;/a>.&lt;/p>
+&lt;h2 id="alerting-rules">Alerting Rules&lt;/h2>
+&lt;p>&lt;a href="https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/">Alerting rules&lt;/a> are written in
+&lt;a href="https://prometheus.io/docs/prometheus/latest/querying/basics/">PromQL&lt;/a> as the rules will be evaluated by the Prometheus
+rule engine. The rule expression can be testet against the real metrics using the Grafana Explore mode. Note that it
+is also important to consider the robustness of a rule with respect to pod restarts, flapping etc.&lt;/p>
+&lt;h2 id="handover">Handover&lt;/h2>
+&lt;p>Once standard operating procedure and alerting rule expression is in place it can be handed over to Netic. Both will be
+validated and reviewed such that the 24x7 operation center is able to follow the operational procedure and such that the
+concrete alerting rule is capable of triggering a correct alert. This may cause a few iterations the first times.&lt;/p></description></item><item><title>Docs: Application Readiness</title><link>/docs/tutorials/application-readiness/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/docs/tutorials/application-readiness/</guid><description>
+&lt;p>Netic recommends for running workloads inside of Kubernetes some which is enforced by the
+policies of the secure cloud stack and some which is best-practice running Kubernetes. These
+recommendations are always valid but especially so if Netic is to provide &lt;a href="../application-operation/">application operations&lt;/a>.&lt;/p>
+&lt;h2 id="security">Security&lt;/h2>
+&lt;p>The containers must be able to run under the following security constraints also enforced by the pod and container
+security context (see also &lt;a href="../../user/security-context/">Security Context&lt;/a>).&lt;/p>
+&lt;ul>
+&lt;li>Running without Linux capabilities&lt;/li>
+&lt;li>Running as unprivileged&lt;/li>
+&lt;li>Impossible to do privilege escalation&lt;/li>
+&lt;/ul>
+&lt;h2 id="stability">Stability&lt;/h2>
+&lt;p>The following concerns the ability to run the an application stable on Kubernetes even when the cluster is undergoing
+maintenance.&lt;/p>
+&lt;ul>
+&lt;li>Number of replica must be &amp;gt;1&lt;/li>
+&lt;li>Readiness and liveness probes should be properly set&lt;/li>
+&lt;li>Resource requests and limits must be set according to expected load&lt;/li>
+&lt;li>Pod disruption budget should be present and allow for maintenance to be carried out (min available &amp;lt; replicas)&lt;/li>
+&lt;li>If applicable persistent volumes should be annotated for backup&lt;/li>
+&lt;/ul>
+&lt;h2 id="documentation">Documentation&lt;/h2>
+&lt;p>The following concerns recommended (and required) documentation.&lt;/p>
+&lt;ul>
+&lt;li>Define requirements for backup; retention and restore&lt;/li>
+&lt;li>Well-defined restore procedure including possibly acceptable dataloss&lt;/li>
+&lt;li>Alerting rules and associated standard operating procedures must be defined&lt;/li>
+&lt;/ul>
+&lt;h2 id="resilience-and-robustness">Resilience and Robustness&lt;/h2>
+&lt;p>The following concerns the resilience, robustness and compliance.&lt;/p>
+&lt;ul>
+&lt;li>Cross-Origin Resource Sharing (CORS) headers are &lt;em>not&lt;/em> automatically set - remember if applicable&lt;/li>
+&lt;li>Observe correct use of http protocol with respect to idempodency etc. to allow for retries and other outage mitigation&lt;/li>
+&lt;li>Utilize fault injection to make sure clients are resilient to unexpected conditions&lt;/li>
+&lt;li>Beware to avoid sensitive log information (GDPR and otherwise)&lt;/li>
+&lt;/ul>
+&lt;h2 id="testing-application-operational-readiness">Testing Application Operational Readiness&lt;/h2>
+&lt;p>Prior to engaging in application operations Netic offers a workshop to assess the operational readiness of the
+application based on the outlined points.&lt;/p></description></item><item><title>Docs: Application Observability</title><link>/docs/tutorials/observability/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/docs/tutorials/observability/</guid><description>
+&lt;p>The secure cloud stack comes with a readymade observability setup to collect logs, metrics and traces and
+gain insights into application health and performance. While the platform as such is polyglot and works
+independt of specific programming languges, there are some recommendations with respect to development.&lt;/p>
+&lt;h2 id="before-you-begin">Before you begin&lt;/h2>
+&lt;p>This guide assumes some familarity with the concepts of cloud native observability, i.e., logs, metrics,
+and traces as well as the chosen programming language.&lt;/p>
+&lt;h2 id="logs">Logs&lt;/h2>
+&lt;p>Basically there is no requirements on logging. All that is output to stdout/stderr will be forwarded to the
+log indexing solution. However, it is recommended to use a logging framework to make sure the log output is
+consistent and allowing for more easy log parsing afterwards. Below are examples of common logging frameworks
+for a few languages.&lt;/p>
+&lt;p>It is worth mentioning that &lt;a href="https://opentelemetry.io/">OpenTelemetry&lt;/a> is also working on standardizing logging
+across languages however only alpha support currently exists for a few languages.&lt;/p>
+&lt;div class="alert alert-info note callout" role="alert">
+&lt;strong>Note:&lt;/strong> If the application is also providing traces it is recommended to add trace ids to the log output.
+&lt;/div>
+&lt;h3 id="net">.NET&lt;/h3>
+&lt;p>The .NET framework comes with logging interfaces built in and a number of 3rd party solution can be hooked
+into to support controlling the log output. Examples are:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://serilog.net/">SeriLog&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://nlog-project.org/">NLog&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="go">Go&lt;/h3>
+&lt;p>The standard Go libraries for logging is very seldom sufficient and a number of logging frameworks exists. Popular
+ones are:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/sirupsen/logrus">Logrus&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/rs/zerolog">Zerolog&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://pkg.go.dev/go.uber.org/zap">Zap&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="java">Java&lt;/h3>
+&lt;p>Java also comes with built in logging support in the &lt;code>java.util.logging&lt;/code> (jul) package though a number of 3rd frameworks
+are also very popular. Interoperational bridges exists between these and also between these and the built-in Java support.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://logging.apache.org/log4j/2.x/">log4j&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.slf4j.org/">slf4j&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="metrics-and-traces">Metrics and Traces&lt;/h2>
+&lt;p>While metrics and traces are different concepts there are some overlap. Metrics are a quantitative measure aggregating data, i.e.,
+a counter of requests or a histogram of latencies. Distributed traces are a qualitative measure recording the exact execution
+path of a specific transaction through the system. However, often it is desired to record metrics in almost the same places as
+a span is added to a trace. This makes a natural coupling between traces and metrics. Also support is coming for enriching the
+aggregated metrics with trace ids representing examples, like a histogram bucket of a high latency may be reported along with
+an trace id of a transaction with high latency.&lt;/p>
+&lt;p>While the platform does not put any constraints on trace or metrics frameworks by default it is recommended to use and follow
+the &lt;a href="https://opentelemetry.io/">OpenTelemetry&lt;/a> recommendations. The &lt;a href="https://opentelemetry.io/">OpenTelemetry&lt;/a> project both support
+libraries for multiple languages and also standadizes recommendations on naming, labels etc. This allows for more easy reuse
+of dashboards, alerts, and more across applications. The instrumentation libraries implement the standard metrics.&lt;/p>
+&lt;h3 id="net-1">.NET&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://opentelemetry.io/docs/instrumentation/net/">OpenTelemetry&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/prometheus-net/prometheus-net">prometheus-net&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="go-1">Go&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://opentelemetry.io/docs/instrumentation/go/">OpenTelemetry&lt;/a>&lt;/li>
+&lt;li>Prometheus official &lt;a href="https://github.com/prometheus/client_golang">client_golang&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="java-1">Java&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://opentelemetry.io/docs/instrumentation/java/">OpenTelemetry&lt;/a>&lt;/li>
+&lt;li>Prometheus official &lt;a href="https://github.com/prometheus/client_java">client_java&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="whats-next">What&amp;rsquo;s next&lt;/h2>
+&lt;ul>
+&lt;li>Activate telemetry collection - see &lt;a href="/docs/user/observability/">Observability&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Docs: Distroless Container Images</title><link>/docs/tutorials/distroless/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/docs/tutorials/distroless/</guid><description>
+&lt;p>Usually source code is compiled and added as a new layer on some existing container base image. Some
+programming languages require some interpreter to run like a Python interpreter or a virtual machine
+running Java bytecode.&lt;/p>
+&lt;p>It is convenient to use a base image populated with normal *nix tooling and maybe even based on a known
+Linux distribution such as Ubuntu. This allows for easy debugging by executing commands inside of the
+running container image. However this also expands the surface of attack both with respect to the number
+of tools and service that might contain vulnerabilites but also the tools aviailable should someone be
+able to execute arbitrary commands within the running conatiner.&lt;/p>
+&lt;p>At the same time the more utilities and libraries that exists in the images the bigger the image
+becomes. The size in itself is not a problem as such however size do matter when it comes to startup
+times and also the amount of storage required both on the Kubernetes worker nodes as well as in the
+container registry.&lt;/p>
+&lt;p>To reduce both attack surface and size it is recommended that production images are built based on
+distroless base images - if at all possible. Google provides distroless base images for a number of
+interpreted and compiled languages see &lt;a href="https://github.com/GoogleContainerTools/distroless">distroless&lt;/a>.&lt;/p></description></item></channel></rss>
