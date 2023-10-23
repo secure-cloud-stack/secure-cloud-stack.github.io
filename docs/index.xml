@@ -259,8 +259,7 @@ definition &lt;code>HTTPProxy&lt;/code>.&lt;/p>
 &lt;p>Automation is set up for both TLS certificates and DNS entries. Before hand you need to agree on which
 DNS domains the setup should be enabled for.&lt;/p>
 &lt;h2 id="configuring-ingress">Configuring Ingress&lt;/h2>
-&lt;p>The most portable way to configure ingress is using the Kubernetes &lt;code>Ingress&lt;/code> resource as below. This will
-automatically create a DNS &lt;code>A&lt;/code> records for the given host pointing to the public IP address of the cluster.&lt;/p>
+&lt;p>The most portable way to configure ingress is using the Kubernetes &lt;code>Ingress&lt;/code> resource as below.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">apiVersion&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">networking.k8s.io/v1&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">kind&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Ingress&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">metadata&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
@@ -286,10 +285,15 @@ automatically create a DNS &lt;code>A&lt;/code> records for the given host point
 &lt;code>netic.dk/network-ingress: &amp;quot;contour&amp;quot;&lt;/code> as this activates the network policy allowing ingress to the port
 named &lt;code>http&lt;/code>.
 &lt;/div>
-&lt;h2 id="tls-handling">TLS Handling&lt;/h2>
+&lt;h3 id="tls-termination">TLS Termination&lt;/h3>
 &lt;p>It is possible to issue certificates based on &lt;a href="https://letsencrypt.org/">Let&amp;rsquo;s Encrypt&lt;/a> by annotating the
 ingress resource. Certificates are also automatically renewed. Note the Let&amp;rsquo;s Encrypt limits if doing
-a lot of deployments.&lt;/p>
+a lot of deployments.
+The annotation: &lt;code>cert-manager.io/cluster-issuer: letsencrypt&lt;/code> means that it will uses a cluster-issuer called letsencrypt,
+which is configured to use the &lt;a href="https://datatracker.ietf.org/doc/html/rfc8555#section-8.4">ACME DNS Challenge&lt;/a> to issue the certificate.
+This cluster-issuer requires that Netic manages DNS for the domain to be issued.
+If it is not possible to have Netic manage DNS, then it is also possible to use &lt;a href="https://datatracker.ietf.org/doc/html/rfc8555#section-8.3">ACME HTTP Challenge&lt;/a>,
+this does require the cluster to be publicly available for letsencrypt to validate.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">apiVersion&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">networking.k8s.io/v1&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">kind&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Ingress&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">metadata&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
@@ -313,7 +317,11 @@ a lot of deployments.&lt;/p>
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">name&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">verify-service&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">port&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">name&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">http&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Network Policies</title><link>/docs/user/network-policies/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/docs/user/network-policies/</guid><description>
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ingress-dns">Ingress DNS&lt;/h3>
+&lt;p>When a ingress resource is created a DNS A record i created that points the host to the public IP of the cluster,
+but only if the host in the ingress resouce is on the configured allow list.
+For this feature to work, Netic must manage the DNS for the host/domain.&lt;/p>
+&lt;p>It is possible to have Netic manage domain/subdomains, contact Netic for more information.&lt;/p></description></item><item><title>Docs: Network Policies</title><link>/docs/user/network-policies/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/docs/user/network-policies/</guid><description>
 &lt;p>The network policies restricts communication within the cluster to mitigate effects should
 a pod get compromised. A number of network policies will be deployed into a namespace by default.&lt;/p>
 &lt;h2 id="default-policies">Default policies&lt;/h2>
